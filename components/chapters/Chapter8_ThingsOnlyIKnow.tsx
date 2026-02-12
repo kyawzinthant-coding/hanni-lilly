@@ -50,7 +50,7 @@ const NOTE_CARDS: NoteCard[] = [
   },
   {
     id: 5,
-    text: "He's allergic to hot sun. And to spicy chinese snacks too. She doesn't always know these things.",
+    text: "She's allergic to hot sun. And to spicy chinese snacks too. She doesn't always know these things.",
     sub: null,
     rotation: -3,
     x: "6%",
