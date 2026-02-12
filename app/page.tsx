@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import { Suspense, useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import ProgressDots from "@/components/shared/ProgressDots";
 import Chapter0_Opening from "@/components/chapters/Chapter0_Opening";
@@ -29,7 +29,15 @@ function useNamesFromUrl(): { nameFrom: string; nameTo: string } {
   }, [searchParams]);
 }
 
-export default function HanniNLilly() {
+function PageFallback() {
+  return (
+    <main className="film-grain relative mx-auto h-screen w-full flex items-center justify-center" style={{ background: "var(--burgundy)" }}>
+      <div className="h-8 w-8 rounded-full border-2 border-[var(--gold)]/50 border-t-[var(--gold)] animate-spin" />
+    </main>
+  );
+}
+
+function HanniNLilly() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentChapter, setCurrentChapter] = useState(0);
   const { nameFrom, nameTo } = useNamesFromUrl();
@@ -113,5 +121,13 @@ export default function HanniNLilly() {
         <Chapter7_Forever onReplay={handleReplay} nameFrom={nameFrom} nameTo={nameTo} />
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <HanniNLilly />
+    </Suspense>
   );
 }
