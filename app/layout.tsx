@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "HanniNLilly — 3 Years of Us",
+  title: "Hanni & Lilly — A Valentine's Day Love Story",
   description:
-    "An immersive, cinematic love story told through a phone screen. A Valentine's Day experience.",
+    "A Valentine's Day love story. 3 years of us—told through a phone screen. Share it with someone you love.",
 };
 
 export const viewport: Viewport = {

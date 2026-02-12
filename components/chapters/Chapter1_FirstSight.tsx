@@ -97,7 +97,7 @@ export default function Chapter1_FirstSight() {
       <SparkleParticles />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6">
-        {/* Polaroid */}
+        {/* Polaroid — the moment he first saw her */}
         {step >= 2 && (
           <motion.div
             initial={{ opacity: 0, y: 100 }}
@@ -105,17 +105,19 @@ export default function Chapter1_FirstSight() {
             transition={{ type: "spring", stiffness: 100, damping: 15 }}
             className="mb-6"
           >
-            <div className="bg-[var(--ivory)] p-2 pb-10 shadow-xl" style={{ width: 150 }}>
-              <div
-                className="h-[110px] w-full"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #C8445A 0%, #D4A853 100%)",
-                  filter: "sepia(0.3)",
-                }}
+            <div className="bg-[var(--ivory)] p-2 pb-10 shadow-xl" style={{ width: 180 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/first-sight.png"
+                alt="The moment he first saw her"
+                className="h-[140px] w-full object-cover md:h-[160px]"
+                style={{ filter: "sepia(0.15)" }}
               />
               <p className="mt-2 text-center font-handwritten text-xs text-[var(--burgundy)]">
-                {"2022 \u2014 The Very First Moment"}
+                April 14, 2023 — 9:00 AM
+              </p>
+              <p className="mt-0.5 text-center font-body text-[10px] text-[var(--burgundy)] opacity-70">
+                The day I saw you
               </p>
             </div>
           </motion.div>

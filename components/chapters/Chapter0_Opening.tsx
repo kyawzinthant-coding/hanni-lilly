@@ -80,7 +80,12 @@ function OrnamentSVG() {
   );
 }
 
-export default function Chapter0_Opening({ onBegin, nameFrom = "Hanni", nameTo = "Lilly", currentChapter = 0 }: Chapter0Props) {
+export default function Chapter0_Opening({
+  onBegin,
+  nameFrom = "Hanni",
+  nameTo = "Lilly",
+  currentChapter = 0,
+}: Chapter0Props) {
   const [ref, isInView] = useChapterInView(0.5);
   const [scrollHintVisible, setScrollHintVisible] = useState(true);
   const title = `${nameFrom} & ${nameTo}`;
@@ -99,9 +104,12 @@ export default function Chapter0_Opening({ onBegin, nameFrom = "Hanni", nameTo =
     <section
       ref={ref as React.RefObject<HTMLElement>}
       className="chapter vignette relative flex flex-col items-center justify-center"
-      style={{ background: "var(--burgundy)" }}
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 50%, rgba(200,68,90,0.12) 0%, var(--burgundy) 50%, #0D0810 100%)",
+      }}
     >
-      <PetalCanvas count={10} speed="slow" active={isInView} />
+      <PetalCanvas count={14} speed="slow" active={isInView} />
 
       <div className="relative z-10 flex flex-col items-center gap-5 px-6 text-center">
         <OrnamentSVG />
@@ -121,7 +129,16 @@ export default function Chapter0_Opening({ onBegin, nameFrom = "Hanni", nameTo =
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          3 Years of Us
+          Our 2 Years of Moments
+        </motion.p>
+
+        <motion.p
+          className="font-body text-xs uppercase tracking-[0.2em] text-[var(--petal-pink)] opacity-80 sm:text-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.8 }}
+          transition={{ delay: 1 }}
+        >
+          A Valentine&apos;s Day Love Story
         </motion.p>
 
         <motion.div
@@ -137,7 +154,7 @@ export default function Chapter0_Opening({ onBegin, nameFrom = "Hanni", nameTo =
           animate={{ opacity: 0.6 }}
           transition={{ delay: 1.4 }}
         >
-          February 14
+          February 14 · Valentine&apos;s Day
         </motion.p>
 
         <HeartSVG />

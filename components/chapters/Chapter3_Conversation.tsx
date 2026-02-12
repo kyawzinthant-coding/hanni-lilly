@@ -2,56 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useChapterInView } from "@/hooks/use-chapter-in-view";
-import ChatBubble from "@/components/shared/ChatBubble";
 import { useEffect, useState } from "react";
-
-function GoldenThread() {
-  return (
-    <div className="flex w-full max-w-[280px] items-center gap-2">
-      {/* Left phone icon */}
-      <motion.svg
-        viewBox="0 0 24 24"
-        className="h-5 w-5 shrink-0"
-        fill="var(--gold)"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
-        transition={{ delay: 0.2 }}
-      >
-        <rect x="5" y="2" width="14" height="20" rx="2" fill="none" stroke="var(--gold)" strokeWidth="1.5" />
-        <circle cx="12" cy="18" r="1" fill="var(--gold)" />
-      </motion.svg>
-
-      {/* Thread line */}
-      <svg viewBox="0 0 200 10" className="h-2 flex-1">
-        <motion.line
-          x1="0"
-          y1="5"
-          x2="200"
-          y2="5"
-          stroke="var(--gold)"
-          strokeWidth={1.5}
-          filter="drop-shadow(0 0 4px var(--gold))"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-        />
-      </svg>
-
-      {/* Right phone icon */}
-      <motion.svg
-        viewBox="0 0 24 24"
-        className="h-5 w-5 shrink-0"
-        fill="var(--gold)"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
-        transition={{ delay: 1.5 }}
-      >
-        <rect x="5" y="2" width="14" height="20" rx="2" fill="none" stroke="var(--gold)" strokeWidth="1.5" />
-        <circle cx="12" cy="18" r="1" fill="var(--gold)" />
-      </motion.svg>
-    </div>
-  );
-}
 
 export default function Chapter3_Conversation() {
   const [ref, isInView] = useChapterInView(0.5);
@@ -63,9 +14,8 @@ export default function Chapter3_Conversation() {
       return;
     }
     const timers = [
-      setTimeout(() => setStep(1), 200),
-      setTimeout(() => setStep(2), 5000),
-      setTimeout(() => setStep(3), 7000),
+      setTimeout(() => setStep(1), 0),
+      setTimeout(() => setStep(2), 4000),
     ];
     return () => timers.forEach(clearTimeout);
   }, [isInView]);
@@ -79,59 +29,55 @@ export default function Chapter3_Conversation() {
       }}
     >
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 py-12">
-        {/* Chat bubbles */}
-        {step >= 1 && (
-          <div className="flex w-full max-w-[320px] flex-col gap-3 md:max-w-[440px]">
-            <ChatBubble
-              message="Hey, I saw your shoot with the brand — that product is honestly amazing"
-              side="right"
-              delay={0}
-            />
-            <ChatBubble
-              message="Haha really? Thanks!"
-              side="left"
-              delay={1.2}
-              showTyping
-            />
-            <ChatBubble
-              message="Yeah! How was it working with them?"
-              side="right"
-              delay={2.8}
-            />
-            <ChatBubble
-              message="It was fun actually! They're really cool people"
-              side="left"
-              delay={4}
-              showTyping
-            />
-          </div>
+        {/* Step 1 only: her story about coffee, he replied — conversation start */}
+        {step === 1 && (
+          <motion.div
+            className="w-full max-w-[280px] rounded-xl bg-gradient-to-b from-[#2a3545] to-[#1A0810] p-5 shadow-xl md:max-w-[300px]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="mb-3 flex gap-0.5">
+              <div className="h-0.5 flex-1 rounded-full bg-[#1877F2]/60" />
+              <div className="h-0.5 flex-1 rounded-full bg-white/10" />
+            </div>
+            <div className="mb-3 flex items-center gap-2">
+              <div className="h-6 w-6 rounded-full bg-gradient-to-br from-[var(--rose)] to-[var(--petal-pink)]" />
+              <div className="h-2 w-14 rounded-full bg-white/20" />
+            </div>
+            <p className="font-handwritten text-center text-sm text-[var(--ivory)] md:text-base">
+              Lovita Coffee ☕
+            </p>
+            <p className="mt-1 text-center font-body text-[10px] text-[var(--ivory)] opacity-50">
+              Her story
+            </p>
+            <motion.div
+              className="mt-4 rounded-lg border border-white/20 bg-white/5 px-3 py-2"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
+            >
+              <p className="font-body text-xs text-[var(--ivory)] opacity-90">
+                He replied: I wanna drink coffee too 😄
+              </p>
+            </motion.div>
+          </motion.div>
         )}
 
-        {/* Overlay text after chat */}
-        {step >= 2 && (
+        {/* Step 2 only: that's how the conversation started */}
+        {step === 2 && (
           <motion.div
-            className="mt-8 flex flex-col items-center gap-3 text-center"
+            className="flex max-w-[320px] flex-col items-center gap-3 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="font-display text-[24px] italic text-[var(--gold)] sm:text-[28px] md:text-[36px]">
-              1 year. 6 months. Still talking.
+            <p className="font-display text-[22px] italic text-[var(--gold)] sm:text-[26px] md:text-[30px]">
+              That&apos;s how the conversation started.
             </p>
             <p className="font-body text-sm text-[var(--ivory)] opacity-80">
-              Every day. About everything. About nothing.
+              One story. One reply. Then everything.
             </p>
-          </motion.div>
-        )}
-
-        {/* Golden thread */}
-        {step >= 3 && (
-          <motion.div
-            className="mt-6 flex w-full items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <GoldenThread />
           </motion.div>
         )}
       </div>

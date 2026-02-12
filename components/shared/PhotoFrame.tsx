@@ -6,6 +6,7 @@ import { Camera } from "lucide-react";
 interface PhotoFrameProps {
   src?: string;
   caption?: string;
+  subCaption?: string;
   rotation?: number;
   delay?: number;
 }
@@ -13,6 +14,7 @@ interface PhotoFrameProps {
 export default function PhotoFrame({
   src,
   caption = "",
+  subCaption,
   rotation = 0,
   delay = 0,
 }: PhotoFrameProps) {
@@ -24,7 +26,10 @@ export default function PhotoFrame({
       style={{ rotate: rotation }}
       className="inline-block"
     >
-      <div className="bg-[var(--ivory)] p-2 pb-10 shadow-xl" style={{ width: 150 }}>
+      <div
+        className="bg-[var(--ivory)] p-2 pb-10 shadow-xl"
+        style={{ width: 150 }}
+      >
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -47,6 +52,11 @@ export default function PhotoFrame({
         <p className="mt-2 text-center font-handwritten text-xs text-[var(--burgundy)]">
           {caption}
         </p>
+        {subCaption && (
+          <p className="mt-0.5 text-center font-body text-[11px] text-gray-500">
+            {subCaption}
+          </p>
+        )}
       </div>
     </motion.div>
   );

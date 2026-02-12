@@ -467,14 +467,17 @@ export default function Chapter7_Forever({
         {/* Date marker */}
         {step >= 7 && (
           <motion.div
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.6 }}
             transition={{ duration: 1 }}
           >
             <div className="h-px w-16 bg-[var(--gold)] opacity-40 md:w-24" />
             <p className="font-display text-xs tracking-widest text-[var(--ivory)] md:text-sm">
-              February 14 {"\u2022"} 3 Years
+              February 14 {"\u2022"} 3 Years {"\u2022"} Valentine&apos;s Day
+            </p>
+            <p className="font-handwritten text-sm text-[var(--petal-pink)] opacity-90">
+              Happy Valentine&apos;s Day
             </p>
             <div className="h-px w-16 bg-[var(--gold)] opacity-40 md:w-24" />
           </motion.div>
@@ -502,7 +505,7 @@ export default function Chapter7_Forever({
               {shareCopied ? "Link copied!" : "Share this story"}
             </motion.button>
             <p className="font-body text-xs text-[var(--ivory)] opacity-40">
-              Thank you for reading our story.
+              Happy Valentine&apos;s Day. Thank you for reading our story.
             </p>
           </motion.div>
         )}
