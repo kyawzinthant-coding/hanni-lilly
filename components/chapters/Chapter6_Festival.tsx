@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useChapterInView } from "@/hooks/use-chapter-in-view";
+import { Heart } from "lucide-react";
 
 type Memory = {
   id: number;
@@ -148,13 +149,24 @@ function MemoryBlock({
         </div>
       ) : (
         <div
-          className="h-[200px] w-full max-w-md rounded-2xl md:h-[260px]"
+          className="flex h-[200px] w-full max-w-md flex-col items-center justify-center gap-3 rounded-2xl px-6 py-8 ring-1 ring-[var(--gold)]/20 md:h-[260px]"
           style={{
             background:
-              "linear-gradient(135deg, var(--rose) 0%, var(--gold) 100%)",
-            opacity: 0.4,
+              "linear-gradient(145deg, rgba(200, 68, 90, 0.22) 0%, rgba(212, 168, 83, 0.18) 100%)",
           }}
-        />
+        >
+          <Heart
+            className="h-10 w-10 text-[var(--gold)] opacity-60"
+            strokeWidth={1.2}
+            fill="currentColor"
+          />
+          <p className="font-body text-sm text-[var(--ivory)] opacity-70">
+            {memory.date}
+          </p>
+          <p className="font-body text-xs text-[var(--gold)]/80 opacity-80">
+            {memory.location}
+          </p>
+        </div>
       )}
       <div className="flex w-full max-w-lg flex-col items-center gap-2 text-center">
         <p className="font-body text-[15px] text-[var(--gold)]">
