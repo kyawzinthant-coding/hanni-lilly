@@ -71,9 +71,16 @@ const MEMORIES: Memory[] = [
     id: 7,
     date: "November 6, 2025",
     location: "1 Month Anniversary",
-    caption: "1 Month 🤍 He gave her a bracelet.",
-    subCaption: "She sent him a photo wearing it. He kept it.",
-    images: ["/images/1-month-anni.png", "/images/braclet-anni-gift.png"],
+    caption: " 🤍",
+    subCaption: "",
+    images: ["/images/1-month-anni.png"],
+  },
+  {
+    id: 13,
+    date: "November 6, 2025",
+    location: "A Gift",
+    caption: "The bracelet he gave her.",
+    images: ["/images/braclet-anni-gift.png"],
   },
   {
     id: 8,
@@ -135,7 +142,9 @@ function MemoryBlock({
             <img
               src={firstImage}
               alt={memory.caption}
-              className="h-[380px] w-full object-cover md:h-[340px]"
+              className={`${
+                memory.id === 7 ? "h-[480px]" : "h-[380px]"
+              } w-full object-cover md:h-[340px]`}
             />
           ) : (
             <div className="flex gap-1.5 p-1.5">
