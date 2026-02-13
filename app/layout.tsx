@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Hanni & Lilly — A Valentine's Day Love Story",
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="font-body antialiased" suppressHydrationWarning>
         {children}
+        <Analytics />
       </body>
     </html>
   );
