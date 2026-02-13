@@ -4,89 +4,35 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Music, VolumeX } from "lucide-react";
 
 const STORAGE_KEY = "story-audio-enabled";
+const AUDIO_SRC = "/audio/loft.mp3";
+const DEFAULT_VOLUME = 0.5; // 0–1, moderate level
 
-// YouTube video to play as background music (audio only; video is hidden).
-// Link: https://youtu.be/ytjLaWlzqgs
-const YOUTUBE_VIDEO_ID = "ytjLaWlzqgs";
-const DEFAULT_VOLUME = 50; // 0–100; moderate level, not too loud or quiet
-
-type YTPlayer = {
-  playVideo: () => void;
-  pauseVideo: () => void;
-  setVolume: (volume: number) => void;
-};
-
-declare global {
-  interface Window {
-    YT: {
-      Player: new (
-        elementId: string,
-        options: {
-          videoId: string;
-          playerVars?: Record<string, number | string>;
-          events?: { onReady?: (event: { target: YTPlayer }) => void };
-        }
-      ) => YTPlayer;
-    };
-    onYouTubeIframeAPIReady?: () => void;
+function getInitialEnabled(): boolean {
+  if (typeof window === "undefined") return true;
+  try {
+    return localStorage.getItem(STORAGE_KEY) !== "false";
+  } catch {
+    return true;
   }
 }
 
 export default function MusicToggle() {
-  const [enabled, setEnabled] = useState(false);
-  const [apiReady, setApiReady] = useState(false);
-  const playerRef = useRef<YTPlayer | null>(null);
-  const hasAutoPlayedRef = useRef(false);
+  const [enabled, setEnabled] = useState(getInitialEnabled);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
 
-  // Load YouTube IFrame API once
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.YT?.Player) {
-      setApiReady(true);
-      return;
-    }
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScript = document.getElementsByTagName("script")[0];
-    firstScript?.parentNode?.insertBefore(tag, firstScript);
-    window.onYouTubeIframeAPIReady = () => setApiReady(true);
-    return () => {
-      window.onYouTubeIframeAPIReady = undefined;
-    };
+  const play = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = DEFAULT_VOLUME;
+    audio.play().catch(() => {
+      // Autoplay blocked (e.g. mobile); will start on first user interaction
+    });
   }, []);
 
-  const createAndPlay = useCallback(() => {
-    if (playerRef.current) {
-      const p = playerRef.current as { playVideo: () => void; setVolume?: (v: number) => void };
-      if (typeof p.setVolume === "function") p.setVolume(DEFAULT_VOLUME);
-      p.playVideo();
-      return;
-    }
-    if (!window.YT?.Player) return;
-    const player = new window.YT.Player("youtube-audio-player", {
-      videoId: YOUTUBE_VIDEO_ID,
-      playerVars: {
-        autoplay: 1,
-        loop: 1,
-        playlist: YOUTUBE_VIDEO_ID,
-        controls: 0,
-        disablekb: 1,
-        fs: 0,
-        modestbranding: 1,
-        playsinline: 1,
-        rel: 0,
-        showinfo: 0,
-        iv_load_policy: 3,
-      },
-      events: {
-        onReady: (event) => {
-          const target = event.target as { setVolume?: (v: number) => void; playVideo: () => void };
-          if (typeof target.setVolume === "function") target.setVolume(DEFAULT_VOLUME);
-          target.playVideo();
-        },
-      },
-    });
-    playerRef.current = player;
+  const pause = useCallback(() => {
+    audioRef.current?.pause();
   }, []);
 
   const toggle = useCallback(() => {
@@ -97,53 +43,67 @@ export default function MusicToggle() {
     } catch {
       // ignore
     }
+    if (next) play();
+    else pause();
+  }, [enabled, play, pause]);
 
-    if (next) {
-      if (apiReady) {
-        createAndPlay();
-      } else {
-        const check = setInterval(() => {
-          if (window.YT?.Player) {
-            clearInterval(check);
-            setApiReady(true);
-            createAndPlay();
-          }
-        }, 100);
-        return () => clearInterval(check);
-      }
-    } else {
-      if (playerRef.current) {
-        playerRef.current.pauseVideo();
-      }
-    }
-  }, [enabled, apiReady, createAndPlay]);
-
-  // When music is on by default, start playback once the API is ready (may be blocked by browser autoplay policy)
+  // Try to autoplay when enabled: immediately and when audio is ready (canplay), plus short delayed retries
   useEffect(() => {
-    if (!enabled || !apiReady || hasAutoPlayedRef.current) return;
-    hasAutoPlayedRef.current = true;
-    createAndPlay();
-  }, [enabled, apiReady, createAndPlay]);
+    if (!enabled) return;
+    const audio = audioRef.current;
+    if (!audio) return;
 
-  // Restore preference; default to ON when never set (music plays by default)
+    const tryPlay = () => {
+      if (enabledRef.current && audio.paused) play();
+    };
+
+    tryPlay();
+    audio.addEventListener("canplay", tryPlay);
+    audio.addEventListener("loadeddata", tryPlay);
+
+    const t1 = setTimeout(tryPlay, 150);
+    const t2 = setTimeout(tryPlay, 500);
+
+    return () => {
+      audio.removeEventListener("canplay", tryPlay);
+      audio.removeEventListener("loadeddata", tryPlay);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [enabled, play]);
+
+  // On mobile, start music on first user interaction if enabled and not yet playing
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      setEnabled(stored !== "false");
-    } catch {
-      setEnabled(true);
-    }
-  }, []);
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const startOnFirstInteraction = () => {
+      if (!enabledRef.current) return;
+      if (audio.paused) play();
+      removeListeners();
+    };
+
+    const removeListeners = () => {
+      document.removeEventListener("click", startOnFirstInteraction);
+      document.removeEventListener("touchstart", startOnFirstInteraction, { capture: true });
+    };
+
+    document.addEventListener("click", startOnFirstInteraction, { once: true });
+    document.addEventListener("touchstart", startOnFirstInteraction, { once: true, capture: true });
+
+    return removeListeners;
+  }, [play]);
 
   return (
     <>
-      {/* Hidden YouTube player (audio only; video not visible). YT.Player injects iframe here. */}
-      <div
-        className="pointer-events-none fixed bottom-0 left-0 h-px w-px overflow-hidden opacity-0"
+      <audio
+        ref={audioRef}
+        src={AUDIO_SRC}
+        loop
+        playsInline
+        preload="auto"
         aria-hidden
-      >
-        <div id="youtube-audio-player" />
-      </div>
+      />
       <button
         type="button"
         onClick={toggle}
