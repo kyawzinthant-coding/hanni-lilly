@@ -85,11 +85,16 @@ export default function MusicToggle() {
 
     const removeListeners = () => {
       document.removeEventListener("click", startOnFirstInteraction);
-      document.removeEventListener("touchstart", startOnFirstInteraction, { capture: true });
+      document.removeEventListener("touchstart", startOnFirstInteraction, {
+        capture: true,
+      });
     };
 
     document.addEventListener("click", startOnFirstInteraction, { once: true });
-    document.addEventListener("touchstart", startOnFirstInteraction, { once: true, capture: true });
+    document.addEventListener("touchstart", startOnFirstInteraction, {
+      once: true,
+      capture: true,
+    });
 
     return removeListeners;
   }, [play]);
