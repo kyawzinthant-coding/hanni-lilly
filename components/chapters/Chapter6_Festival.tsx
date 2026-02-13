@@ -20,11 +20,7 @@ const MEMORIES: Memory[] = [
     date: "October 1, 2025",
     location: "Yankin House",
     caption: "He brought Lilly flowers. Their first date. 🌸",
-    images: [
-      "/images/first-date-1.png",
-      "/images/first-date-2.png",
-      "/images/first-date-3.png",
-    ],
+    images: ["/images/first-date-1.png", "/images/first-date-2.png"],
   },
   {
     id: 2,
@@ -39,6 +35,13 @@ const MEMORIES: Memory[] = [
     location: "Plant House",
     caption:
       "Surrounded by green. Just the two of them. They kept coming back.",
+    images: ["/images/plant-house-cafe.png"],
+  },
+  {
+    id: 12,
+    date: "October 30, 2025",
+    location: "A Gift",
+    caption: "The plant he gave her.",
     images: ["/images/plant-house.png"],
   },
   {
@@ -46,7 +49,7 @@ const MEMORIES: Memory[] = [
     date: "October 10, 2025",
     location: "Vintage 36, North Dagon",
     caption: "Vintage vibes. North Dagon.",
-    images: [],
+    images: ["/images/vintage.png"],
   },
   {
     id: 5,
@@ -88,7 +91,7 @@ const MEMORIES: Memory[] = [
     caption: "He cooked for her.",
     subCaption: "Dec 22, 2025",
     myanmarDetail: "ပြည်ကြီးငါးဟင်းနဲ့ ထမင်းဘူး",
-    images: [],
+    images: ["/images/lunchbox.png"],
   },
   {
     id: 10,
@@ -132,7 +135,7 @@ function MemoryBlock({
             <img
               src={firstImage}
               alt={memory.caption}
-              className="h-[280px] w-full object-cover md:h-[340px]"
+              className="h-[380px] w-full object-cover md:h-[340px]"
             />
           ) : (
             <div className="flex gap-1.5 p-1.5">
@@ -141,7 +144,7 @@ function MemoryBlock({
                   key={i}
                   src={src}
                   alt={`${memory.caption} ${i + 1}`}
-                  className="h-[220px] flex-1 object-cover md:h-[280px]"
+                  className="h-[220px] flex-1 object-contain md:h-[280px]"
                 />
               ))}
             </div>

@@ -38,7 +38,7 @@ function EnvelopeLetter({
     >
       {showTapHint && !opened && (
         <motion.p
-          className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-body text-xs text-[var(--gold)] opacity-60 md:text-sm"
+          className="absolute -top-8 left-2 -translate-x-1/ whitespace-nowrap font-body text-md text-[var(--gold)] opacity-60 md:text-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.6 }}
           transition={{ delay: 0.5 }}
@@ -70,7 +70,7 @@ function EnvelopeLetter({
         aria-label={onOpen && !opened ? "Open letter" : undefined}
       >
         <motion.div
-          className="absolute -top-2 left-1/2 z-20 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full md:h-10 md:w-10"
+          className="absolute -top-2 left-[105px] z-20 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full md:h-10 md:w-10"
           style={{
             background: "var(--rose)",
             boxShadow: "0 2px 8px rgba(200,68,90,0.5)",
